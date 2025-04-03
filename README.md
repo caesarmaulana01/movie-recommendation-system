@@ -425,7 +425,7 @@ $$
 RMSE = \sqrt{\frac{1}{N} \sum_{i=1}^{N} (y_i - \hat{y}_i)^2}
 $$
 - **y_i** = Rating sebenarnya dari pengguna
-- **\hat{y}_i** = Rating yang diprediksi oleh model
+- **$$ \hat{y}_i $$*** = Rating yang diprediksi oleh model
 - **N** = Jumlah sampel
 
 - **MAE (Mean Absolute Error)**: Mengukur rata-rata kesalahan absolut antara rating yang diprediksi dan rating yang sebenarnya.
