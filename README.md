@@ -418,7 +418,7 @@ Pada **Collaborative Filtering**, model ini berfokus pada problem statement kedu
 
 #### **Metrik yang Digunakan:**
 
-- **RMSE (Root Mean Squared Error)**: Mengukur deviasi antara rating yang diprediksi dan rating aktual dari pengguna. RMSE lebih sensitif terhadap error besar.
+**RMSE (Root Mean Squared Error)**: Mengukur deviasi antara rating yang diprediksi dan rating aktual dari pengguna. RMSE lebih sensitif terhadap error besar.
 
 ##### **Formula RMSE:**
 ```math
@@ -428,7 +428,7 @@ RMSE = \sqrt{\frac{1}{N} \sum_{i=1}^{N} (y_i - \hat{y}_i)^2}
 - **$`\hat{y}_i`$** = Rating yang diprediksi oleh model
 - **$`N`$** = Jumlah sampel
 
-- **MAE (Mean Absolute Error)**: Mengukur rata-rata kesalahan absolut antara rating yang diprediksi dan rating yang sebenarnya.
+**MAE (Mean Absolute Error)**: Mengukur rata-rata kesalahan absolut antara rating yang diprediksi dan rating yang sebenarnya.
 
 ##### **Formula MAE:**
 ```math
