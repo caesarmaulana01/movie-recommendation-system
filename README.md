@@ -441,7 +441,7 @@ Semakin kecil nilai MAE, semakin baik prediksi rating yang dihasilkan oleh model
 2. **Penerapan SVD**: Matriks rating dipisahkan menjadi tiga komponen untuk menemukan pola tersembunyi yang digunakan untuk memprediksi rating pengguna.
 3. **Evaluasi Model**: Model dievaluasi menggunakan RMSE dan MAE untuk mengukur sejauh mana prediksi rating yang dihasilkan mendekati rating aktual pengguna.
 
-**Contoh Implementasi:**
+**Implementasi:**
 ```python
 from surprise import SVD
 from surprise import accuracy
