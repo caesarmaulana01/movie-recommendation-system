@@ -436,9 +436,9 @@ $$
 - **MAE (Mean Absolute Error)**: Mengukur rata-rata kesalahan absolut antara rating yang diprediksi dan rating yang sebenarnya.
 
 ##### **Formula MAE:**
-$$
+```math
 MAE = \frac{1}{N} \sum_{i=1}^{N} |y_i - \hat{y}_i|
-$$
+```
 Semakin kecil nilai MAE, semakin baik prediksi rating yang dihasilkan oleh model.
 
 #### **Proses Evaluasi:**
