@@ -429,7 +429,7 @@ $$
 \hat{y}_i 
 $$ 
 = Rating yang diprediksi oleh model
-- $y_i = Rating sebenarnya dari pengguna
+- $`y_i`$ = Rating sebenarnya dari pengguna
 - $$ \hat{y}_i $$ = Rating yang diprediksi oleh model
 - **N** = Jumlah sampel
 
