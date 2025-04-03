@@ -394,11 +394,11 @@ Pada **Content-Based Filtering**, model rekomendasi dibangun untuk menjawab prob
 - **Cosine Similarity**: Digunakan untuk mengukur sejauh mana dua film memiliki kesamaan berdasarkan fitur yang diekstrak (misalnya, sinopsis, genre, aktor, dll.). Nilai cosine similarity berkisar antara 0 (tidak mirip) hingga 1 (sangat mirip).
 
 ##### **Formula Cosine Similarity:**
-$$
+```math
 similarity(A, B) = \frac{A \cdot B}{||A|| \times ||B||}
-$$
-- **A, B** = Vektor fitur dari dua film yang dibandingkan
-- **||A||, ||B||** = Panjang (magnitudo) vektor
+```
+- **$`A, B`$** = Vektor fitur dari dua film yang dibandingkan
+- **$`||A||, ||B||`$** = Panjang (magnitudo) vektor
 
 #### **Proses Evaluasi:**
 1. **Ekstraksi Fitur Teks**: Menggunakan **TF-IDF Vectorizer** untuk mengubah deskripsi film menjadi vektor numerik.
