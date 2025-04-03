@@ -426,7 +426,7 @@ RMSE = \sqrt{\frac{1}{N} \sum_{i=1}^{N} (y_i - \hat{y}_i)^2}
 $$
 
 $$
-\hat{y}_i
+\hat{y}_i = Rating yang diprediksi oleh model
 $$
 - y_i = Rating sebenarnya dari pengguna
 - $$ \hat{y}_i $$ = Rating yang diprediksi oleh model
