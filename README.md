@@ -126,7 +126,7 @@ Dataset ini berisi metadata untuk sekitar 5.000 film yang tersedia di The Movie 
 ### Dataset 2: **The Movies Dataset – Ratings**
 **Sumber**: [The Movies Dataset (Kaggle)](https://www.kaggle.com/datasets/rounakbanik/the-movies-dataset)
 
-#### 📝 Deskripsi
+#### Deskripsi
 Dataset ini lebih luas, mencakup metadata untuk 45.000 film yang tercantum dalam Full MovieLens Dataset. Film yang ada di dataset ini dirilis pada atau sebelum Juli 2017. Selain metadata film, dataset ini juga mencakup 26 juta rating dari 270.000 pengguna untuk semua film dalam dataset. Rating diberikan dalam skala 1-5 dan diperoleh dari situs resmi GroupLens.
 
 **Tabel**: `ratings_df`
@@ -144,7 +144,7 @@ Dataset ini lebih luas, mencakup metadata untuk 45.000 film yang tercantum dalam
 
 - **Outlier (berdasarkan boxplot)**:
 
-![Box Plot `ratings_df`](images/boxplot_ratings_df.png)
+![Box Plot `ratings_df`](images/boxplot_ratings_df.jpg)
 
   - `rating`: Beberapa nilai ekstrem (terutama di bawah 1.0)
   - `movieId`: Distribusi panjang dengan outlier
