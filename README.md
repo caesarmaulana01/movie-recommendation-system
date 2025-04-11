@@ -208,6 +208,33 @@ Heatmap ini menunjukkan hubungan antar variabel penting seperti budget, populari
 
 ![Heatmap Korelasi](images/corellation_heatmap.png)
 
+**Insight dari Visualisasi Data Film**
+
+**1. Hubungan antara Popularitas dan Pendapatan Film**
+- Film dengan popularitas tinggi cenderung memiliki pendapatan lebih besar, meskipun ada beberapa outlier yang menghasilkan pendapatan tinggi meskipun popularitasnya sedang.  
+- Sebagian besar film memiliki popularitas rendah hingga sedang, dengan pendapatan yang relatif kecil.  
+
+**2. Distribusi Rata-rata Vote Film**
+- Distribusi rating cenderung normal dengan puncak pada nilai **6-7**, menunjukkan bahwa sebagian besar film dinilai cukup baik.  
+- Rating sangat rendah (<2) dan sangat tinggi (>9) jarang terjadi.  
+
+**3. Distribusi Rating Pengguna**
+- Mayoritas rating berkisar antara **3-5**, dengan puncak pada **4**, mengindikasikan kepuasan pengguna.  
+- Rating di bawah 3 lebih jarang terjadi, menunjukkan sedikit film yang benar-benar buruk menurut pengguna.  
+
+**4. Correlation Heatmap**
+- **Budget dan revenue (0.73)** serta **popularity dan revenue (0.64)** menunjukkan hubungan kuat, artinya film dengan anggaran besar dan popularitas tinggi cenderung menghasilkan lebih banyak pendapatan.  
+- **Budget dan popularity (0.51)** memiliki korelasi moderat, menandakan bahwa film dengan anggaran besar sering kali lebih populer.  
+- **Vote average tidak memiliki korelasi kuat** dengan faktor lain, menunjukkan bahwa rating pengguna tidak terlalu dipengaruhi oleh budget, popularitas, atau runtime.  
+
+**5. Hubungan antara Durasi Film dan Rata-rata Vote**
+- Tidak ada pola yang jelas antara runtime film dan rating rata-rata.  
+- Film dengan runtime panjang (>200 menit) terkadang mendapatkan rating tinggi, tetapi secara keseluruhan, durasi bukan faktor utama dalam menentukan rating.  
+
+**Kesimpulan**
+Faktor utama yang mempengaruhi pendapatan film adalah **budget dan popularitas**, sementara **rating rata-rata tidak memiliki hubungan kuat dengan variabel lain**. Mayoritas film mendapat rating **sedang hingga tinggi**, mencerminkan kepuasan pengguna secara umum. **Runtime film tidak berperan besar dalam menentukan rating**, sehingga faktor lain seperti **cerita, aktor, atau genre** kemungkinan lebih berpengaruh.
+
+
 ---
 
 ## Data Preparation
