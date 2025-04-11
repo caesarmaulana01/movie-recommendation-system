@@ -453,7 +453,8 @@ Metrik ini membandingkan ranking yang dihasilkan dengan ranking ideal, dimana it
 
 #### Formula:
 ```math
-DCG@K = \sum_{i=1}^{K} \frac{rel_i}{\log_2(i+1)}
+DCG@K = \sum_{i=1}^{K} \frac{rel_i}{\log_2(i+1)}, 
+
 NDCG@K = \frac{DCG@K}{IDCG@K}
 ```
 Dimana:
