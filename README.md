@@ -208,7 +208,7 @@ Heatmap ini menunjukkan hubungan antar variabel penting seperti budget, populari
 
 ![Heatmap Korelasi](images/corellation_heatmap.png)
 
-**Insight dari Visualisasi Data Film**
+### Insight dari Visualisasi Data Film
 
 **1. Hubungan antara Popularitas dan Pendapatan Film**
 - Film dengan popularitas tinggi cenderung memiliki pendapatan lebih besar, meskipun ada beberapa outlier yang menghasilkan pendapatan tinggi meskipun popularitasnya sedang.  
