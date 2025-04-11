@@ -350,6 +350,13 @@ Sistem ini merekomendasikan film berdasarkan kemiripan deskripsi dan genre dari 
 | 3    | Amidst the Devil's Wings | 0.547723         | [drama, crime, action] | 3               |
 | 4    | The Prestige              | 0.400000         | [drama]                | 1               |
 | 5    | Romeo Is Bleeding        | 0.400000         | [drama, crime, action] | 3               |
+| 6    | Black November           | 0.358569         | [drama, crime, action] | 3               |
+| 7    | Takers                   | 0.335410         | [drama, crime, action] | 3               |
+| 8    | Faster                   | 0.335410         | [drama, crime, action] | 3               |
+| 9    | Catwoman                 | 0.316228         | [crime, action]        | 2               |
+| 10   | Gangster Squad           | 0.316228         | [drama, crime, action] | 3               |
+
+
 
 **Input: The Godfather**
 
@@ -360,6 +367,11 @@ Sistem ini merekomendasikan film berdasarkan kemiripan deskripsi dan genre dari 
 | 3    | Amidst the Devil's Wings| 0.384900         | [drama, crime]       | 2               |
 | 4    | The Son of No One       | 0.377964         | [drama, crime]       | 2               |
 | 5    | Apocalypse Now          | 0.333333         | [drama]              | 1               |
+| 6    | The Cotton Club         | 0.316228         | [drama, crime]       | 2               |
+| 7    | The Talented Mr. Ripley | 0.316228         | [drama, crime]       | 2               |
+| 8    | The Rainmaker           | 0.316228         | [drama, crime]       | 2               |
+| 9    | Donnie Brasco           | 0.316228         | [drama, crime]       | 2               |
+| 10   | Scarface                | 0.316228         | [drama, crime]       | 2               |
 
 ---
 
@@ -385,25 +397,34 @@ Sistem ini memanfaatkan data interaksi pengguna berupa rating. Rekomendasi diber
 
 **User 2 – Film yang Pernah Ditonton:**
 
-| Title                  | Genres                        | Rating |
-|------------------------|-------------------------------|--------|
-| The Conversation       | crime, drama, mystery         | 5.0    |
-| The Hours              | drama                         | 5.0    |
-| Monsters, Inc.         | animation, comedy, family     | 5.0    |
-| Terminator 3           | action, thriller, sci-fi      | 4.0    |
-| Romeo + Juliet         | drama, romance                | 4.0    |
-| Reservoir Dogs         | crime, thriller               | 4.0    |
+| No | Title                         | Genres                                 | User Rating |
+|----|-------------------------------|----------------------------------------|-------------|
+| 1  | The Conversation              | crime, drama, mystery                  | 5.0         |
+| 2  | The Hours                     | drama                                  | 5.0         |
+| 3  | Monsters, Inc.               | animation, comedy, family              | 5.0         |
+| 4  | Terminator 3: Rise of the Machines | action, thriller, sciencefiction   | 4.0         |
+| 5  | My Own Private Idaho          | drama, romance                         | 4.0         |
+| 6  | Romeo + Juliet                | drama, romance                         | 4.0         |
+| 7  | Reservoir Dogs                | crime, thriller                        | 4.0         |
+| 8  | Love Actually                 | comedy, romance, drama                 | 4.0         |
+| 9  | The Devil Wears Prada        | comedy, drama, romance                 | 4.0         |
+| 10 | Notting Hill                 | romance, comedy, drama                 | 4.0         |
+
 
 **Top-10 Rekomendasi untuk User 2:**
 
-| Rank | Title                  | Genres                         | Predicted Rating |
-|------|------------------------|---------------------------------|------------------|
-| 1    | Scarface               | action, crime, drama            | 4.33             |
-| 2    | The Good Thief         | crime, drama, thriller          | 4.32             |
-| 3    | Beverly Hills Cop III  | action, comedy, crime           | 4.28             |
-| 4    | The Sixth Sense        | mystery, thriller, drama        | 4.26             |
-| 5    | Terminator Salvation   | action, sciencefiction, thriller| 4.23             |
-
+| Rank | Title                  | Genres                             | Predicted Rating |
+|------|------------------------|------------------------------------|------------------|
+| 1    | Scarface               | action, crime, drama               | 4.326152         |
+| 2    | The Good Thief         | crime, drama, thriller             | 4.315547         |
+| 3    | Beverly Hills Cop III  | action, comedy, crime              | 4.278468         |
+| 4    | The Sixth Sense        | mystery, thriller, drama           | 4.260774         |
+| 5    | Terminator Salvation   | action, sciencefiction, thriller   | 4.233225         |
+| 6    | Notes on a Scandal     | drama, romance                     | 4.219549         |
+| 7    | Galaxy Quest           | comedy, family, sciencefiction     | 4.214713         |
+| 8    | Hannibal Rising        | crime, drama, thriller             | 4.185182         |
+| 9    | Space Jam              | animation, comedy, drama           | 4.176195         |
+| 10   | Mission: Impossible    | adventure, action, thriller        | 4.166978         |
 
 ### Perbandingan dan Analisis
 
