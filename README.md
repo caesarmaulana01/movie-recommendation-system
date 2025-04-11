@@ -50,24 +50,23 @@ Proyek ini berfokus pada pembangunan sistem rekomendasi film berbasis dataset TM
 
 Proyek ini menggunakan dua dataset berbeda yang saling melengkapi untuk membangun sistem rekomendasi film berbasis *content-based filtering* dan *collaborative filtering*.
 
----
 
-### 🗂️ Dataset 1: **TMDB 5000 Movie Dataset**
-📍 **Sumber**: [TMDB 5000 Movie Dataset (Kaggle)](https://www.kaggle.com/datasets/tmdb/tmdb-movie-metadata)
+### Dataset 1: **TMDB 5000 Movie Dataset**
+**Sumber**: [TMDB 5000 Movie Dataset (Kaggle)](https://www.kaggle.com/datasets/tmdb/tmdb-movie-metadata)
 
-#### 📝 Deskripsi
+#### Deskripsi
 Dataset ini berisi metadata untuk sekitar 5.000 film yang tersedia di The Movie Database (TMDB). Data mencakup informasi tentang pemeran, kru, genre, anggaran, pendapatan, tanggal rilis, bahasa, perusahaan produksi, dan negara produksi.
 
-📁 **Tabel**: `movies_df` dan `credits_df`
+**Tabel**: `movies_df` dan `credits_df`
 
-#### 🔢 Ukuran Dataset
+#### Ukuran Dataset
 
 | Tabel      | Jumlah Baris | Jumlah Kolom |
 |------------|--------------|--------------|
 | movies_df  | 4803         | 20           |
 | credits_df | 4803         | 4            |
 
-#### 🧹 Kondisi Data
+#### Kondisi Data
 
 - **Missing Values:**
   - `homepage`: 3091 nilai kosong
@@ -79,15 +78,15 @@ Dataset ini berisi metadata untuk sekitar 5.000 film yang tersedia di The Movie 
 - **Data Duplikat**: Tidak ditemukan
 
 - **Outlier (berdasarkan boxplot)**:
+![Box Plot `movies_df`](images/boxplot_movies_df.png)
   - `budget`, `revenue`, `popularity`, `vote_count`, dan `id`: Banyak nilai outlier
   - `runtime`: Outlier dengan durasi sangat pendek/panjang
   - `vote_average`: Relatif normal, ada nilai ekstrem
   - `id`: Distribusi panjang dengan outlier
 
-> 💡 Outlier terlihat jelas dari visualisasi boxplot.
 ![Box Plot `movies_df`](images/boxplot_movies_df.png)
 
-#### 📌 Struktur Fitur: `movies_df`
+#### Struktur Fitur: `movies_df`
 
 | Kolom                | Tipe Data | Deskripsi                                                                 |
 |----------------------|-----------|---------------------------------------------------------------------------|
@@ -112,7 +111,7 @@ Dataset ini berisi metadata untuk sekitar 5.000 film yang tersedia di The Movie 
 | vote_average         | float64   | Rata-rata skor rating pengguna                                           |
 | vote_count           | int64     | Jumlah suara rating dari pengguna                                        |
 
-#### 📌 Struktur Fitur: `credits_df`
+#### Struktur Fitur: `credits_df`
 
 | Kolom     | Tipe Data | Deskripsi                                                        |
 |-----------|-----------|-------------------------------------------------------------------|
@@ -123,21 +122,21 @@ Dataset ini berisi metadata untuk sekitar 5.000 film yang tersedia di The Movie 
 
 ---
 
-### 🗂️ Dataset 2: **The Movies Dataset – Ratings**
-📍 **Sumber**: [The Movies Dataset (Kaggle)](https://www.kaggle.com/datasets/rounakbanik/the-movies-dataset)
+### Dataset 2: **The Movies Dataset – Ratings**
+**Sumber**: [The Movies Dataset (Kaggle)](https://www.kaggle.com/datasets/rounakbanik/the-movies-dataset)
 
 #### 📝 Deskripsi
 Dataset ini lebih luas, mencakup metadata untuk 45.000 film yang tercantum dalam Full MovieLens Dataset. Film yang ada di dataset ini dirilis pada atau sebelum Juli 2017. Selain metadata film, dataset ini juga mencakup 26 juta rating dari 270.000 pengguna untuk semua film dalam dataset. Rating diberikan dalam skala 1-5 dan diperoleh dari situs resmi GroupLens.
 
-📁 **Tabel**: `ratings_df`
+**Tabel**: `ratings_df`
 
-#### 🔢 Ukuran Dataset
+#### Ukuran Dataset
 
 | Tabel      | Jumlah Baris | Jumlah Kolom |
 |------------|--------------|--------------|
 | ratings_df | 100,004      | 4            |
 
-#### 🧹 Kondisi Data
+#### Kondisi Data
 
 - **Missing Values**: Tidak ada
 - **Data Duplikat**: Tidak ditemukan
@@ -149,7 +148,7 @@ Dataset ini lebih luas, mencakup metadata untuk 45.000 film yang tercantum dalam
 
 ![Box Plot `ratings_df`](images/boxplot_ratings_df.png)
 
-#### 📌 Struktur Fitur: `ratings_df`
+#### Struktur Fitur: `ratings_df`
 
 | Kolom     | Tipe Data | Deskripsi                                           |
 |-----------|-----------|-----------------------------------------------------|
@@ -225,10 +224,11 @@ Untuk menyoroti film-film berkualitas tinggi, dilakukan pendekatan kuantitatif b
 - Menentukan ambang batas (`m`) sebagai **kuantil 90%** dari jumlah vote.
 - Menggunakan formula **weighted rating** dari IMDb untuk menghitung skor akhir film yang mempertimbangkan baik rating maupun jumlah pemilih.
 
+#### Formula:
 ```math
 \text{Weighted Rating} = \left(\frac{v}{v+m} \times R \right) + \left(\frac{m}{m+v} \times C \right)
 ```
-
+Dimana:
 - **$v$** = Jumlah vote untuk film tersebut  
 - **$R$** = Rata-rata rating film  
 - **$m$** = Ambang batas jumlah vote (kuantil 90%)  
@@ -391,79 +391,6 @@ Kedua pendekatan memiliki kelebihan masing-masing dan dapat digunakan saling mel
 
 ---
 
-## Evaluation
-
-### 1. **Evaluasi Content-Based Filtering (TF-IDF + Cosine Similarity)**
-
-Pada **Content-Based Filtering**, model rekomendasi dibangun untuk menjawab problem statement pertama, yaitu bagaimana merekomendasikan film berdasarkan kemiripan konten seperti genre, sutradara, dan aktor. Dengan menggunakan teknik **TF-IDF Vectorizer** dan **Cosine Similarity**, sistem mampu mengukur kesamaan antarfilm dan menghasilkan rekomendasi yang relevan.
-
-#### **Metrik yang Digunakan:**
-- **Cosine Similarity**: Digunakan untuk mengukur sejauh mana dua film memiliki kesamaan berdasarkan fitur yang diekstrak (misalnya, sinopsis, genre, aktor, dll.). Nilai cosine similarity berkisar antara 0 (tidak mirip) hingga 1 (sangat mirip).
-
-##### **Formula Cosine Similarity:**
-```math
-similarity(A, B) = \frac{A \cdot B}{||A|| \times ||B||}
-```
-- **$`A, B`$** = Vektor fitur dari dua film yang dibandingkan
-- **$`||A||, ||B||`$** = Panjang (magnitudo) vektor
-
-#### **Proses Evaluasi:**
-1. **Ekstraksi Fitur Teks**: Menggunakan **TF-IDF Vectorizer** untuk mengubah deskripsi film menjadi vektor numerik.
-2. **Perhitungan Kemiripan**: Menggunakan **Cosine Similarity** untuk mengukur kesamaan antarfilm berdasarkan vektor yang dihasilkan.
-3. **Generasi Rekomendasi**: Model akan memberikan rekomendasi berdasarkan kesamaan antara film yang diminta dengan film lainnya.
-
-
-Model ini berhasil menjawab problem statement pertama dengan memberikan rekomendasi film yang serupa berdasarkan kontennya. Implementasi ini juga mendukung pencapaian goal pertama, yaitu membangun sistem rekomendasi berbasis konten menggunakan **TF-IDF** dan **Cosine Similarity**.
-
-### 2. **Evaluasi Collaborative Filtering (SVD)**
-
-Pada **Collaborative Filtering**, model ini berfokus pada problem statement kedua, yaitu bagaimana mempersonalisasi rekomendasi berdasarkan preferensi pengguna tertentu. Dengan menggunakan teknik **Singular Value Decomposition (SVD)**, sistem dapat memprediksi rating film berdasarkan pola rating pengguna lain yang memiliki preferensi serupa.
-
-#### **Metrik yang Digunakan:**
-
-**RMSE (Root Mean Squared Error)**: Mengukur deviasi antara rating yang diprediksi dan rating aktual dari pengguna. RMSE lebih sensitif terhadap error besar.
-
-##### **Formula RMSE:**
-```math
-RMSE = \sqrt{\frac{1}{N} \sum_{i=1}^{N} (y_i - \hat{y}_i)^2}
-```
-- **$`y_i`$** = Rating sebenarnya dari pengguna
-- **$`\hat{y}_i`$** = Rating yang diprediksi oleh model
-- **$`N`$** = Jumlah sampel
-
-**MAE (Mean Absolute Error)**: Mengukur rata-rata kesalahan absolut antara rating yang diprediksi dan rating yang sebenarnya.
-
-##### **Formula MAE:**
-```math
-MAE = \frac{1}{N} \sum_{i=1}^{N} |y_i - \hat{y}_i|
-```
-Semakin kecil nilai MAE, semakin baik prediksi rating yang dihasilkan oleh model.
-
-#### **Proses Evaluasi:**
-1. **Praproses Data Rating**: Matriks rating yang memetakan pengguna ke film diolah dan siap digunakan untuk pemodelan.
-2. **Penerapan SVD**: Matriks rating dipisahkan menjadi tiga komponen untuk menemukan pola tersembunyi yang digunakan untuk memprediksi rating pengguna.
-3. **Evaluasi Model**: Model dievaluasi menggunakan RMSE dan MAE untuk mengukur sejauh mana prediksi rating yang dihasilkan mendekati rating aktual pengguna.
-
-
-#### **Hasil Evaluasi:**
-- **RMSE**: 0.8972 ± 0.0046
-- **MAE**: 0.6912 ± 0.0044
-
-Model Collaborative Filtering berhasil menjawab problem statement kedua dengan memberikan rekomendasi yang dipersonalisasi berdasarkan preferensi pengguna. Evaluasi dengan RMSE dan MAE juga mendukung problem statement ketiga, yaitu bagaimana mengukur efektivitas sistem rekomendasi yang dibangun. Dengan error yang relatif kecil, model ini menunjukkan kemampuan yang baik dalam memprediksi rating pengguna.
-
-### **Kesimpulan**
-
-1. **Content-Based Filtering** berfokus pada pengukuran kesamaan antarfilm menggunakan **Cosine Similarity**, bukan pada perbandingan prediksi rating dan rating aktual.
-2. **Collaborative Filtering (SVD)** dievaluasi dengan **RMSE** dan **MAE**, yang menunjukkan bahwa model ini memiliki kemampuan yang baik dalam memprediksi rating pengguna.
-3. Evaluasi yang dilakukan membuktikan bahwa model rekomendasi yang dibangun sesuai dengan goal yang telah ditetapkan dalam Business Understanding.
-
----
-
-
-
-RMSE = \sqrt{\frac{1}{N}\sum_{i=1}^{N}(y_i - ŷ_i)^2}
-
-
 ## Evaluasi
 
 ### 1. Evaluasi Content-Based Filtering (NDCG@K)
@@ -506,7 +433,7 @@ Dimana:
 Pada **Collaborative Filtering**, model ini berfokus pada problem statement kedua, yaitu bagaimana mempersonalisasi rekomendasi berdasarkan preferensi pengguna tertentu. Dengan menggunakan teknik **Singular Value Decomposition (SVD)**, sistem dapat memprediksi rating film berdasarkan pola rating pengguna lain yang memiliki preferensi serupa.
 
 
-#### **1. RMSE (Root Mean Squared Error)**
+#### 1. RMSE (Root Mean Squared Error)
 
 ##### Definisi:
 **RMSE (Root Mean Squared Error)** adalah metrik evaluasi yang digunakan untuk mengukur deviasi standar dari kesalahan prediksi dalam sebuah model. RMSE memberikan gambaran seberapa jauh prediksi model menyimpang dari nilai sebenarnya, dengan memberi penalti lebih besar terhadap kesalahan prediksi yang besar. Oleh karena itu, metrik ini sangat berguna ketika kesalahan besar perlu diminimalkan, karena sifatnya yang sensitif terhadap outlier. Nilai RMSE yang lebih kecil menunjukkan bahwa model memiliki kinerja prediksi yang lebih akurat.
@@ -523,7 +450,7 @@ Dimana:
 - **$`\hat{y}_i`$** = Rating yang diprediksi oleh model
 - **$`N`$** = Jumlah sampel
 
-#### **1. MAE (Mean Absolute Error)**
+#### 1. MAE (Mean Absolute Error)
 
 **MAE (Mean Absolute Error)** adalah metrik evaluasi yang digunakan untuk mengukur rata-rata dari kesalahan absolut antara rating yang diprediksi oleh model dan rating sebenarnya yang diberikan oleh pengguna. Metrik ini memberikan gambaran seberapa besar rata-rata deviasi prediksi dari nilai sebenarnya tanpa memperhatikan arah kesalahannya (positif atau negatif), sehingga semakin kecil nilai MAE, maka semakin akurat prediksi model tersebut.
    
