@@ -78,12 +78,14 @@ Dataset ini berisi metadata untuk sekitar 5.000 film yang tersedia di The Movie 
 - **Data Duplikat**: Tidak ditemukan
 
 - **Outlier (berdasarkan boxplot)**:
+
+![Box Plot `movies_df`](images/boxplot_movies_df.jpg)
+
   - `budget`, `revenue`, `popularity`, `vote_count`, dan `id`: Banyak nilai outlier
   - `runtime`: Outlier dengan durasi sangat pendek/panjang
   - `vote_average`: Relatif normal, ada nilai ekstrem
   - `id`: Distribusi panjang dengan outlier
 
-![Box Plot `movies_df`](images/boxplot_movies_df.jpg)
 
 #### Struktur Fitur: `movies_df`
 
@@ -141,11 +143,13 @@ Dataset ini lebih luas, mencakup metadata untuk 45.000 film yang tercantum dalam
 - **Data Duplikat**: Tidak ditemukan
 
 - **Outlier (berdasarkan boxplot)**:
+
+![Box Plot `ratings_df`](images/boxplot_ratings_df.png)
+
   - `rating`: Beberapa nilai ekstrem (terutama di bawah 1.0)
   - `movieId`: Distribusi panjang dengan outlier
   - `timestamp`: Relatif normal, sedikit outlier ekstrem
 
-![Box Plot `ratings_df`](images/boxplot_ratings_df.png)
 
 #### Struktur Fitur: `ratings_df`
 
