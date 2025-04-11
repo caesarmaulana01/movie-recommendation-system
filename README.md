@@ -48,63 +48,115 @@ Proyek ini berfokus pada pembangunan sistem rekomendasi film berbasis dataset TM
 
 ## Data Understanding
 
-### Sumber Dataset
+Proyek ini menggunakan dua dataset berbeda yang saling melengkapi untuk membangun sistem rekomendasi film berbasis *content-based filtering* dan *collaborative filtering*.
 
-Dataset yang digunakan dalam proyek ini berasal dari dua sumber utama:
+---
 
-- **[TMDB 5000 Movie Dataset](https://www.kaggle.com/datasets/tmdb/tmdb-movie-metadata)**
-- **[The Movies Dataset](https://www.kaggle.com/datasets/rounakbanik/the-movies-dataset)**
+### 🗂️ Dataset 1: **TMDB 5000 Movie Dataset**
+📍 **Sumber**: [TMDB 5000 Movie Dataset (Kaggle)](https://www.kaggle.com/datasets/tmdb/tmdb-movie-metadata)
 
-### Context
-
-#### TMDB 5000 Movie Dataset
+#### 📝 Deskripsi
 Dataset ini berisi metadata untuk sekitar 5.000 film yang tersedia di The Movie Database (TMDB). Data mencakup informasi tentang pemeran, kru, genre, anggaran, pendapatan, tanggal rilis, bahasa, perusahaan produksi, dan negara produksi.
 
-#### The Movies Dataset
+📁 **Tabel**: `movies_df` dan `credits_df`
+
+#### 🔢 Ukuran Dataset
+
+| Tabel      | Jumlah Baris | Jumlah Kolom |
+|------------|--------------|--------------|
+| movies_df  | 4803         | 20           |
+| credits_df | 4803         | 4            |
+
+#### 🧹 Kondisi Data
+
+- **Missing Values:**
+  - `homepage`: 3091 nilai kosong
+  - `tagline`: 844 nilai kosong
+  - `overview`: 3 nilai kosong
+  - `runtime`: 2 nilai kosong
+  - `release_date`: 1 nilai kosong
+
+- **Data Duplikat**: Tidak ditemukan
+
+- **Outlier (berdasarkan boxplot)**:
+  - `budget`, `revenue`, `popularity`, `vote_count`, dan `id`: Banyak nilai outlier
+  - `runtime`: Outlier dengan durasi sangat pendek/panjang
+  - `vote_average`: Relatif normal, ada nilai ekstrem
+  - `id`: Distribusi panjang dengan outlier
+
+> 💡 Outlier terlihat jelas dari visualisasi boxplot.
+![Box Plot `movies_df`](images/boxplot_movies_df.png)
+
+#### 📌 Struktur Fitur: `movies_df`
+
+| Kolom                | Tipe Data | Deskripsi                                                                 |
+|----------------------|-----------|---------------------------------------------------------------------------|
+| budget               | int64     | Anggaran produksi film (USD)                                             |
+| genres               | object    | Daftar genre film (format JSON string)                                   |
+| homepage             | object    | URL resmi film                                                           |
+| id                   | int64     | ID unik film                                                             |
+| keywords             | object    | Kata kunci isi cerita film (JSON string)                                 |
+| original_language    | object    | Bahasa asli film                                                         |
+| original_title       | object    | Judul asli saat perilisan                                                |
+| overview             | object    | Ringkasan cerita                                                         |
+| popularity           | float64   | Skor popularitas berdasarkan TMDB                                        |
+| production_companies | object    | Daftar perusahaan produksi (JSON string)                                 |
+| production_countries | object    | Daftar negara produksi (JSON string)                                     |
+| release_date         | object    | Tanggal rilis                                                            |
+| revenue              | int64     | Total pendapatan film (USD)                                              |
+| runtime              | float64   | Durasi film (menit)                                                      |
+| spoken_languages     | object    | Bahasa yang digunakan (JSON string)                                      |
+| status               | object    | Status rilis film, misal: "Released", "Post Production"                  |
+| tagline              | object    | Kalimat promosi film                                                     |
+| title                | object    | Judul umum film                                                          |
+| vote_average         | float64   | Rata-rata skor rating pengguna                                           |
+| vote_count           | int64     | Jumlah suara rating dari pengguna                                        |
+
+#### 📌 Struktur Fitur: `credits_df`
+
+| Kolom     | Tipe Data | Deskripsi                                                        |
+|-----------|-----------|-------------------------------------------------------------------|
+| movie_id  | int64     | ID film (relasi dengan `movies_df.id`)                          |
+| title     | object    | Judul film                                                       |
+| cast      | object    | Daftar pemeran utama (format JSON string)                        |
+| crew      | object    | Daftar kru film (termasuk sutradara, format JSON string)         |
+
+---
+
+### 🗂️ Dataset 2: **The Movies Dataset – Ratings**
+📍 **Sumber**: [The Movies Dataset (Kaggle)](https://www.kaggle.com/datasets/rounakbanik/the-movies-dataset)
+
+#### 📝 Deskripsi
 Dataset ini lebih luas, mencakup metadata untuk 45.000 film yang tercantum dalam Full MovieLens Dataset. Film yang ada di dataset ini dirilis pada atau sebelum Juli 2017. Selain metadata film, dataset ini juga mencakup 26 juta rating dari 270.000 pengguna untuk semua film dalam dataset. Rating diberikan dalam skala 1-5 dan diperoleh dari situs resmi GroupLens.
 
-### Isi Dataset
+📁 **Tabel**: `ratings_df`
 
+#### 🔢 Ukuran Dataset
 
-### Variabel-variabel dalam Dataset
+| Tabel      | Jumlah Baris | Jumlah Kolom |
+|------------|--------------|--------------|
+| ratings_df | 100,004      | 4            |
 
-#### Dataset Film (`movies_df`) - TMDB 5000 Movie Dataset
-Dataset ini berisi informasi terkait berbagai film, termasuk anggaran, genre, dan rating pengguna.
+#### 🧹 Kondisi Data
 
-| No | Nama Kolom          | Tipe Data | Deskripsi                      |
-|----|-------------------|-----------|--------------------------------|
-| 1  | budget            | int64     | Total anggaran produksi film.  |
-| 2  | genres            | object    | Daftar genre film.             |
-| 3  | id                | int64     | ID unik film.                  |
-| 4  | original_language | object    | Bahasa asli film.              |
-| 5  | overview          | object    | Ringkasan singkat cerita film. |
-| 6  | popularity        | float64   | Skor numerik popularitas film. |
-| 7  | release_date      | object    | Tanggal rilis film.            |
-| 8  | revenue           | int64     | Total pendapatan film.         |
-| 9  | runtime           | float64   | Durasi film dalam menit.       |
-| 10 | title             | object    | Judul film.                    |
-| 11 | vote_average      | float64   | Rata-rata rating film.         |
-| 12 | vote_count        | int64     | Jumlah ulasan film.            |
+- **Missing Values**: Tidak ada
+- **Data Duplikat**: Tidak ditemukan
 
-#### Dataset Kredit (`credits_df`) - TMDB 5000 Movie Dataset
-Dataset ini berisi informasi pemeran dan kru film.
+- **Outlier (berdasarkan boxplot)**:
+  - `rating`: Beberapa nilai ekstrem (terutama di bawah 1.0)
+  - `movieId`: Distribusi panjang dengan outlier
+  - `timestamp`: Relatif normal, sedikit outlier ekstrem
 
-| No | Nama Kolom | Tipe Data | Deskripsi                            |
-|----|-----------|-----------|--------------------------------------|
-| 1  | movie_id  | int64     | ID unik film.                        |
-| 2  | title     | object    | Judul film.                          |
-| 3  | cast      | object    | Daftar aktor utama.                  |
-| 4  | crew      | object    | Daftar kru film, termasuk sutradara. |
+![Box Plot `ratings_df`](images/boxplot_ratings_df.png)
 
-#### Dataset Rating (`ratings_df`) - The Movies Dataset
-Dataset ini berisi rating yang diberikan oleh pengguna terhadap film tertentu.
+#### 📌 Struktur Fitur: `ratings_df`
 
-| No | Nama Kolom  | Tipe Data | Deskripsi               |
-|----|------------|-----------|-------------------------|
-| 1  | userId     | int64     | ID unik pengguna.       |
-| 2  | movieId    | int64     | ID unik film.           |
-| 3  | rating     | float64   | Skor rating (1-5).      |
-| 4  | timestamp  | int64     | Waktu pemberian rating. |
+| Kolom     | Tipe Data | Deskripsi                                           |
+|-----------|-----------|-----------------------------------------------------|
+| userId    | int64     | ID pengguna yang memberi rating                     |
+| movieId   | int64     | ID film yang diberi rating                          |
+| rating    | float64   | Skor rating film (rentang 0.5 hingga 5.0)           |
+| timestamp | int64     | Waktu rating dalam format UNIX timestamp            |
 
 ### Exploratory Data Analysis (EDA)
 
@@ -115,20 +167,9 @@ Berdasarkan analisis statistik, berikut adalah beberapa insight penting dari dat
 - **Durasi Film Terpanjang**: Durasi film terpanjang dalam dataset adalah 338 menit.
 - **Film dengan Pendapatan Tertinggi**: Film dengan pendapatan tertinggi adalah *Avatar* dengan total pendapatan $2,787,965,087.
 
-##### Kode:
-```python
-print(f"- Rata-rata vote film: {movies_df['vote_average'].mean():.2f}")
-print(f"- Durasi film terpanjang: {movies_df['runtime'].max()} menit")
-print(f"- Film dengan pendapatan tertinggi: {movies_df.loc[movies_df['revenue'].idxmax(), 'title']} dengan pendapatan ${movies_df['revenue'].max():,.2f}")
-```
 
 2. Distribusi Rating Film
 Distribusi rata-rata rating film menunjukkan frekuensi rating yang diberikan oleh pengguna. Hasil visualisasi menunjukkan bahwa mayoritas film memiliki rating sekitar 6 hingga 7, dengan distribusi yang cenderung normal.
-
-Visualisasi:
-```python
-sns.histplot(movies_df['vote_average'].dropna(), bins=30, kde=True)
-```
 
 ![Distribusi Rating Film](images/user_rating_distribution.png)
 
@@ -136,204 +177,130 @@ sns.histplot(movies_df['vote_average'].dropna(), bins=30, kde=True)
 3. Distribusi Rating Pengguna
 Distribusi rating pengguna dalam dataset The Movies menunjukkan bahwa sebagian besar rating diberikan dalam rentang 3 hingga 4, yang menunjukkan preferensi pengguna terhadap film yang memiliki rating lebih tinggi.
 
-Visualisasi:
-```python
-sns.histplot(ratings_df['rating'].dropna(), bins=30, kde=True, color='orange')
-```
-
 ![Rating Pengguna](images/mean_distribution_vote.png)
 
 4. Hubungan antara Popularitas dan Pendapatan Film
 Hubungan antara popularitas dan pendapatan menunjukkan bahwa film dengan popularitas yang lebih tinggi cenderung memiliki pendapatan yang lebih besar, meskipun ada beberapa pengecualian.
-
-Visualisasi:
-```python
-sns.scatterplot(data=movies_df, x='popularity', y='revenue', alpha=0.5)
-```
 
 ![Popularitas dan Pendapatan Film](images/popularity_income.png)
 
 5. Jumlah Film Berdasarkan Bahasa Asli
 Jumlah film yang diproduksi dalam berbagai bahasa menunjukkan bahwa bahasa Inggris adalah yang paling dominan, diikuti oleh bahasa-bahasa lain.
 
-Visualisasi:
-```python
-sns.countplot(y=movies_df['original_language'], order=movies_df['original_language'].value_counts().index, palette='viridis')
-```
-
 ![Jumlah Film Berdasarkan Bahasa](images/languange.png)
 
 6. Hubungan antara Durasi Film dan Rata-rata Vote
 Analisis hubungan antara durasi film dan rating menunjukkan bahwa film dengan durasi lebih panjang tidak selalu mendapat rating yang lebih baik.
 
-Visualisasi:
-```python
-sns.scatterplot(data=movies_df, x='runtime', y='vote_average', alpha=0.5, color='red')
-```
 
 ![Durasi Film dan Rata-rata](images/duration_mean.png)
 
 7. Top 10 Production Companies dengan Jumlah Film Terbanyak
 Top 10 perusahaan produksi dengan jumlah film terbanyak di dataset menunjukkan perusahaan besar seperti Walt Disney Pictures mendominasi.
 
-Visualisasi:
-```python
-production_companies = movies_df['production_companies'].dropna().apply(lambda x: [i['name'] for i in ast.literal_eval(x)] if isinstance(x, str) else [])
-all_companies = [company for sublist in production_companies for company in sublist]
-top_companies = pd.DataFrame(Counter(all_companies).most_common(10), columns=['Company', 'Film Count'])
-sns.barplot(data=top_companies, x='Film Count', y='Company', palette='coolwarm')
-```
 
 ![Top 10 Production Companies](images/top_10.png)
 
 8. Heatmap Korelasi antara Variabel Penting
 Heatmap ini menunjukkan hubungan antar variabel penting seperti budget, popularitas, pendapatan, runtime, dan rating film. Korelasi antara pendapatan dan popularitas sangat kuat.
 
-Visualisasi:
-```python
-sns.heatmap(movies_df[['budget', 'popularity', 'revenue', 'runtime', 'vote_average']].corr(), annot=True, cmap='coolwarm', fmt=".2f")
-```
-
 ![Heatmap Korelasi](images/corellation_heatmap.png)
 
 ---
 
-## Data Preparation  
+## Data Preparation
+
+Tahapan ini bertujuan untuk membersihkan, menyatukan, dan menyiapkan data sebelum dilakukan pemodelan dan sistem rekomendasi. Berikut adalah langkah-langkah data preparation secara sistematis:
 
 ### 1. Penggabungan Dataset
 
-#### Tujuan:
-Menggabungkan data film (`movies_df`) dengan data kredit (`credits_df`) untuk memperoleh informasi lebih lengkap tentang film, termasuk pemeran dan kru.
+Dataset `movies` dan `credits` masing-masing berisi informasi metadata film dan kru/pemeran. Keduanya digabungkan berdasarkan kolom `id` untuk membentuk satu dataframe terpadu. Proses ini mencakup pengubahan nama kolom untuk konsistensi serta penghapusan duplikasi nama kolom.
 
-#### Proses:
-- Menggabungkan dataset berdasarkan kolom `id`.
-- Menghapus kolom duplikat yang tidak diperlukan.
-- Merename kolom agar lebih jelas dan tidak membingungkan.
+### 2. Seleksi Film Populer Berdasarkan Rating
 
-```python
-movies_df = movies_df.merge(credits_df, on='id').drop(columns=['title_y']).rename(columns={'title_x': 'title'})
-```
-
-### 2. Persiapan Fitur Rating
-
-#### Tujuan:
-Menghitung **weighted rating** menggunakan formula **IMDB** untuk memberikan peringkat yang lebih akurat berdasarkan jumlah dan rata-rata rating.
+Untuk menyoroti film-film berkualitas tinggi, dilakukan pendekatan kuantitatif berdasarkan jumlah vote dan nilai rata-rata rating film. Tahapannya adalah sebagai berikut:
 
 #### Proses:
 - Menghitung rata-rata vote seluruh film (`C`).
 - Menentukan ambang batas (`m`) sebagai **kuantil 90%** dari jumlah vote.
-- Menggunakan formula **weighted rating**:
-  
-  \[ \text{Weighted Rating} = \left(\frac{v}{v+m} \times R \right) + \left(\frac{m}{m+v} \times C \right) \]
-  
-  Dimana:
-  - \( v \) = jumlah vote untuk film tersebut.
-  - \( R \) = rata-rata rating film.
-  - \( m \) = threshold jumlah vote agar film masuk perhitungan.
-  - \( C \) = rata-rata vote dari seluruh film.
+- Menggunakan formula **weighted rating** dari IMDb untuk menghitung skor akhir film yang mempertimbangkan baik rating maupun jumlah pemilih.
 
-```python
-C = movies_df['vote_average'].mean()
-m = movies_df['vote_count'].quantile(0.90)
+```math
+\text{Weighted Rating} = \left(\frac{v}{v+m} \times R \right) + \left(\frac{m}{m+v} \times C \right)
 ```
 
-### 3. Pengolahan Fitur Teks (Overview)
+- **$v$** = Jumlah vote untuk film tersebut  
+- **$R$** = Rata-rata rating film  
+- **$m$** = Ambang batas jumlah vote (kuantil 90%)  
+- **$C$** = Rata-rata rating dari seluruh film  
 
-#### Tujuan:
-Menganalisis sinopsis film untuk menemukan hubungan antar film berdasarkan deskripsi ceritanya.
+### 3. Visualisasi Film Terpopuler
 
-#### Proses:
-- Mengisi **missing values** dengan string kosong.
-- Menggunakan **TF-IDF Vectorizer** untuk mengubah teks menjadi representasi numerik.
-- Menghasilkan **matriks TF-IDF** dengan dimensi (jumlah film x jumlah kata unik).
+Film diurutkan berdasarkan nilai `popularity`, dan enam film terpopuler divisualisasikan menggunakan grafik batang horizontal untuk memberikan gambaran umum tren popularitas.
 
-```python
-tfidf_vectorizer = TfidfVectorizer(stop_words='english')
-tfidf_matrix = tfidf_vectorizer.fit_transform(movies_df['overview'].fillna(''))
-```
+### 4. Ekstraksi Fitur dengan TF-IDF (Overview)
 
-### 4. Ekstraksi Metadata
+- TF-IDF (Term Frequency–Inverse Document Frequency) digunakan untuk mengolah kolom `overview`.
+- Tujuannya adalah untuk menilai pentingnya kata-kata dalam deskripsi film terhadap keseluruhan dataset.
+- Matriks kesamaan antar film dihitung menggunakan **Cosine Similarity** berdasarkan hasil TF-IDF.
 
-#### Tujuan:
-Mengekstrak informasi penting dari data **JSON** seperti **sutradara, aktor, genre, dan keywords** agar bisa digunakan dalam sistem rekomendasi.
+### 5. Parsing Data JSON ke Format Python
 
-#### Proses:
-- Parsing string JSON menjadi objek Python.
-- Ekstrak **sutradara** dari data kru film.
-- Mengambil **3 item teratas** dari daftar genre, aktor, dan keywords untuk menjaga relevansi.
+Beberapa kolom seperti `cast`, `crew`, `keywords`, dan `genres` yang semula berbentuk string JSON diubah menjadi struktur Python (list/dictionary) agar dapat diolah lebih lanjut.
 
-```python
-def get_list(x):
-    return [i['name'] for i in eval(x)[:3]] if isinstance(x, str) else []
-```
+### 6. Ekstraksi Fitur Tambahan
 
-### 5. Pembersihan Data
+- Sutradara diambil dari kolom `crew`.
+- Nama pemeran, genre, dan kata kunci diambil dari masing-masing kolom dan dibatasi hingga tiga elemen teratas untuk menjaga kesederhanaan data.
 
-#### Tujuan:
-Standarisasi format teks agar lebih seragam dan mudah diproses dalam model rekomendasi.
+### 7. Pembersihan dan Normalisasi Data
 
-#### Proses:
-- Mengubah semua teks menjadi **lowercase**.
-- Menghapus **spasi** agar konsisten.
-- Menangani **missing values** dengan menggantinya menjadi string kosong.
+- Semua elemen dalam kolom `cast`, `keywords`, `genres`, dan `director` diubah menjadi huruf kecil dan spasi dihapus.
+- Tujuannya untuk menyamakan format string dalam pemodelan berbasis teks.
 
-```python
-def clean_data(x):
-    return [str.lower(i.replace(" ", "")) for i in x] if isinstance(x, list) else ""
-```
+### 8. Pembuatan Fitur Gabungan ('Soup')
 
-### 6. Pembuatan Metadata Soup
+- Fitur `keywords`, `cast`, `director`, dan `genres` digabung menjadi satu string teks yang disebut **soup**.
+- Soup ini digunakan sebagai dasar sistem rekomendasi berbasis konten karena mengandung informasi semantik penting dari film.
 
-#### Tujuan:
-Menggabungkan semua informasi penting ke dalam satu teks panjang (metadata soup) yang mencakup **sutradara, aktor, genre, dan keywords**.
+### 9. Ekstraksi Fitur dengan Count Vectorizer
 
-#### Proses:
-- Menggabungkan elemen-elemen metadata menjadi satu string.
-- Digunakan sebagai dasar perhitungan kemiripan antar film.
+- Count Vectorizer digunakan untuk menghitung frekuensi kata dalam `soup`.
+- Hasilnya kemudian digunakan untuk menghitung **cosine similarity** antar film berdasarkan kata-kata yang muncul bersama.
 
-```python
-movies_df['soup'] = movies_df.apply(lambda x: ' '.join(x['keywords']) + ' ' + ' '.join(x['cast']) + ' ' + x['director'] + ' ' + ' '.join(x['genres']), axis=1)
-```
+### 10. Pemetaan Judul ke Indeks
 
-### 7. Pembuatan Matriks Similarity
-
-#### Tujuan:
-Menghitung kemiripan antar film berdasarkan metadata yang telah dikombinasikan.
-
-#### Proses:
-- Menggunakan **CountVectorizer** untuk mengubah teks menjadi vektor numerik.
-- Menggunakan **Cosine Similarity** untuk menghitung kemiripan antara film berdasarkan metadata yang telah diproses.
-
-```python
-count_matrix = CountVectorizer().fit_transform(movies_df['soup'])
-cosine_sim = cosine_similarity(count_matrix)
-```
+- Dibuat pemetaan balik antara judul film dengan indeks dataframe untuk memudahkan pencarian dan proses rekomendasi berbasis judul film.
 
 ---
 
 ## Modeling
 
+### Tujuan Modeling
+
+Tahap modeling bertujuan membangun sistem rekomendasi untuk membantu pengguna menemukan film yang sesuai dengan preferensinya, berdasarkan konten film atau pola interaksi pengguna lain. Sistem ini diharapkan dapat memberikan saran film yang relevan secara otomatis tanpa harus melakukan pencarian manual.
+
+
+### Skema Sistem Rekomendasi
+
+Dua pendekatan sistem rekomendasi yang diterapkan dalam proyek ini adalah:
+
+1. **Content-Based Filtering**  
+2. **Collaborative Filtering (dengan algoritma SVD)**
+
+Kedua pendekatan digunakan untuk menyelesaikan permasalahan dari sisi yang berbeda, dengan tujuan akhir yang sama: memberikan rekomendasi film yang relevan bagi pengguna.
+
+
 ### 1. Content-Based Filtering
 
-#### Tujuan:
-Mengembangkan sistem rekomendasi berdasarkan **kemiripan konten** dengan menggunakan **TF-IDF Vectorizer** dan **Cosine Similarity**.
+#### Definisi:
+Sistem ini merekomendasikan film berdasarkan kemiripan deskripsi dan genre dari film yang diberikan sebagai input. Pendekatan ini hanya menggunakan metadata film, tanpa memperhatikan interaksi pengguna.
 
-#### Proses:
-- **Ekstraksi Fitur Teks**:
-  - Menggunakan **TF-IDF Vectorizer** untuk mengubah deskripsi film menjadi vektor numerik.
-  - Mengabaikan kata-kata umum (stopwords) agar hasil lebih relevan.
-
-- **Perhitungan Kemiripan**:
-  - Menggunakan **Cosine Similarity** untuk mengukur kesamaan antarfilm berdasarkan vektor yang telah dihasilkan.
-  - Nilai kemiripan berkisar antara 0 (tidak mirip) hingga 1 (sangat mirip).
-
-- **Generasi Rekomendasi**:
-  - Untuk setiap film yang diberikan, sistem mencari film lain dengan skor **Cosine Similarity** tertinggi.
-
-**Implementasi:**
-```python
-cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
-```
+#### Cara Kerja:
+- Deskripsi film dikonversi ke bentuk vektor menggunakan TF-IDF.
+- Kemiripan antar deskripsi dihitung menggunakan Cosine Similarity.
+- Genre film dibandingkan untuk menambah skor relevansi.
+- Film dengan skor tertinggi direkomendasikan.
 
 #### Kelebihan & Kekurangan
 | Aspek                 | Kelebihan | Kekurangan |
@@ -342,28 +309,40 @@ cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
 | **Rekomendasi** | Dapat merekomendasikan film yang mirip | Tidak bisa menangani cold start pengguna baru |
 | **Komputasi** | Cepat dan efisien | Kualitas rekomendasi bergantung pada deskripsi film |
 
+#### Output Top-N Recommendation yang Dihasilkan Model:
+
+**Input: The Dark Knight Rises**
+
+| Rank | Judul Film                | Similarity Score | Matched Genres        | Relevance Score |
+|------|---------------------------|------------------|------------------------|-----------------|
+| 1    | The Dark Knight           | 0.700000         | [drama, crime, action] | 3               |
+| 2    | Batman Begins             | 0.700000         | [drama, crime, action] | 3               |
+| 3    | Amidst the Devil's Wings | 0.547723         | [drama, crime, action] | 3               |
+| 4    | The Prestige              | 0.400000         | [drama]                | 1               |
+| 5    | Romeo Is Bleeding        | 0.400000         | [drama, crime, action] | 3               |
+
+**Input: The Godfather**
+
+| Rank | Judul Film               | Similarity Score | Matched Genres      | Relevance Score |
+|------|--------------------------|------------------|----------------------|-----------------|
+| 1    | The Godfather: Part III | 0.527046         | [drama, crime]       | 2               |
+| 2    | The Godfather: Part II  | 0.421637         | [drama, crime]       | 2               |
+| 3    | Amidst the Devil's Wings| 0.384900         | [drama, crime]       | 2               |
+| 4    | The Son of No One       | 0.377964         | [drama, crime]       | 2               |
+| 5    | Apocalypse Now          | 0.333333         | [drama]              | 1               |
+
 ---
 
-### 2. Collaborative Filtering
+### 2. Collaborative Filtering (SVD)
 
-#### Tujuan:
-Mengembangkan sistem rekomendasi berdasarkan **interaksi pengguna** menggunakan teknik **Singular Value Decomposition (SVD)**.
+#### Definisi:
+Sistem ini memanfaatkan data interaksi pengguna berupa rating. Rekomendasi diberikan berdasarkan pola kesamaan perilaku antar pengguna.
 
-#### Proses:
-- **Praproses Data Rating**:
-  - Menghapus data yang tidak relevan dan menangani nilai yang hilang.
-  - Menggunakan matriks rating (User x Movie) sebagai input untuk pemodelan.
-
-- **Penerapan SVD**:
-  - Menguraikan matriks rating menjadi tiga komponen untuk menemukan pola tersembunyi dalam data.
-  - Menghasilkan **prediksi rating** berdasarkan pola yang ditemukan.
-
-
-**Implementasi:**
-```python
-svd = SVD()
-cross_validate(svd, data, measures=['RMSE', 'MAE'], cv=5)
-```
+#### Cara Kerja:
+- Dibuat matriks pengguna-film dari data rating.
+- Algoritma SVD digunakan untuk mendekomposisi matriks menjadi representasi laten.
+- Model memprediksi rating film yang belum ditonton pengguna.
+- Film dengan rating prediksi tertinggi direkomendasikan.
 
 #### Kelebihan & Kekurangan
 | Aspek                 | Kelebihan | Kekurangan |
@@ -372,15 +351,43 @@ cross_validate(svd, data, measures=['RMSE', 'MAE'], cv=5)
 | **Rekomendasi** | Dapat memberikan saran yang lebih personal | Kesulitan dalam menangani cold start film baru |
 | **Komputasi** | Akurat dalam prediksi rating | Membutuhkan daya komputasi lebih tinggi |
 
----
+#### Output Top-N Recommendation yang Dihasilkan Model:
 
-### 3. Top-N Recommendations
+**User 2 – Film yang Pernah Ditonton:**
 
-Setelah model dilatih, rekomendasi dapat dihasilkan dengan mengambil **Top-10 film dengan skor tertinggi** dari hasil prediksi masing-masing metode.
+| Title                  | Genres                        | Rating |
+|------------------------|-------------------------------|--------|
+| The Conversation       | crime, drama, mystery         | 5.0    |
+| The Hours              | drama                         | 5.0    |
+| Monsters, Inc.         | animation, comedy, family     | 5.0    |
+| Terminator 3           | action, thriller, sci-fi      | 4.0    |
+| Romeo + Juliet         | drama, romance                | 4.0    |
+| Reservoir Dogs         | crime, thriller               | 4.0    |
 
-Metode ini memastikan bahwa pengguna mendapatkan film yang paling relevan berdasarkan pola rating dan metadata film.
+**Top-10 Rekomendasi untuk User 2:**
 
-Dengan dua pendekatan ini, sistem rekomendasi dapat memberikan saran film yang lebih relevan baik berdasarkan kesamaan konten maupun pola interaksi pengguna.
+| Rank | Title                  | Genres                         | Predicted Rating |
+|------|------------------------|---------------------------------|------------------|
+| 1    | Scarface               | action, crime, drama            | 4.33             |
+| 2    | The Good Thief         | crime, drama, thriller          | 4.32             |
+| 3    | Beverly Hills Cop III  | action, comedy, crime           | 4.28             |
+| 4    | The Sixth Sense        | mystery, thriller, drama        | 4.26             |
+| 5    | Terminator Salvation   | action, sciencefiction, thriller| 4.23             |
+
+
+### Perbandingan dan Analisis
+
+| Aspek                       | Content-Based Filtering                        | Collaborative Filtering (SVD)               |
+|----------------------------|-------------------------------------------------|---------------------------------------------|
+| **Sumber Data**            | Metadata film (deskripsi, genre)               | Data interaksi pengguna (rating)            |
+| **Kelebihan**              | Tidak butuh data pengguna lain, cocok untuk pengguna baru | Bisa menangkap pola tersembunyi antar pengguna |
+| **Kekurangan**             | Terbatas pada kesamaan konten, bisa overfitting preferensi awal | Tidak cocok jika data rating sedikit (cold start) |
+| **Cocok untuk**            | Rekomendasi berdasarkan satu film input        | Rekomendasi personal berdasarkan histori     |
+
+
+### Kesimpulan Modeling
+
+Kedua pendekatan memiliki kelebihan masing-masing dan dapat digunakan saling melengkapi. Content-Based cocok digunakan saat sistem belum memiliki banyak data pengguna, sedangkan Collaborative Filtering memberikan rekomendasi yang lebih bersifat personal. Kombinasi keduanya dapat menghasilkan sistem rekomendasi yang lebih akurat dan fleksibel dalam berbagai kondisi.
 
 ---
 
@@ -405,10 +412,6 @@ similarity(A, B) = \frac{A \cdot B}{||A|| \times ||B||}
 2. **Perhitungan Kemiripan**: Menggunakan **Cosine Similarity** untuk mengukur kesamaan antarfilm berdasarkan vektor yang dihasilkan.
 3. **Generasi Rekomendasi**: Model akan memberikan rekomendasi berdasarkan kesamaan antara film yang diminta dengan film lainnya.
 
-**Implementasi:**
-```python
-cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
-```
 
 Model ini berhasil menjawab problem statement pertama dengan memberikan rekomendasi film yang serupa berdasarkan kontennya. Implementasi ini juga mendukung pencapaian goal pertama, yaitu membangun sistem rekomendasi berbasis konten menggunakan **TF-IDF** dan **Cosine Similarity**.
 
@@ -441,16 +444,6 @@ Semakin kecil nilai MAE, semakin baik prediksi rating yang dihasilkan oleh model
 2. **Penerapan SVD**: Matriks rating dipisahkan menjadi tiga komponen untuk menemukan pola tersembunyi yang digunakan untuk memprediksi rating pengguna.
 3. **Evaluasi Model**: Model dievaluasi menggunakan RMSE dan MAE untuk mengukur sejauh mana prediksi rating yang dihasilkan mendekati rating aktual pengguna.
 
-**Implementasi:**
-```python
-from surprise import SVD
-from surprise import accuracy
-from surprise.model_selection import cross_validate
-
-# Model SVD
-svd = SVD()
-cross_validate(svd, data, measures=['RMSE', 'MAE'], cv=5)
-```
 
 #### **Hasil Evaluasi:**
 - **RMSE**: 0.8972 ± 0.0046
@@ -465,3 +458,104 @@ Model Collaborative Filtering berhasil menjawab problem statement kedua dengan m
 3. Evaluasi yang dilakukan membuktikan bahwa model rekomendasi yang dibangun sesuai dengan goal yang telah ditetapkan dalam Business Understanding.
 
 ---
+
+
+
+RMSE = \sqrt{\frac{1}{N}\sum_{i=1}^{N}(y_i - ŷ_i)^2}
+
+
+## Evaluasi
+
+### 1. Evaluasi Content-Based Filtering (NDCG@K)
+Pada **Content-Based Filtering**, model rekomendasi dibangun untuk menjawab problem statement pertama, yaitu bagaimana merekomendasikan film berdasarkan kemiripan konten seperti genre, sutradara, dan aktor. Dengan menggunakan teknik **TF-IDF Vectorizer** dan **Cosine Similarity**, sistem mampu mengukur kesamaan antarfilm dan menghasilkan rekomendasi yang relevan.
+
+#### Metrik yang digunakan:
+**NDCG@10 (Normalized Discounted Cumulative Gain at 10)** adalah metrik evaluasi yang digunakan untuk mengukur kualitas peringkat hasil rekomendasi hingga posisi ke-10. Metrik ini tidak hanya memperhitungkan relevansi item yang direkomendasikan — dalam hal ini diukur berdasarkan kesamaan genre dengan film input — tetapi juga mempertimbangkan posisi item tersebut dalam daftar. Artinya, item yang lebih relevan dan muncul di posisi lebih atas akan memberikan kontribusi yang lebih besar terhadap skor keseluruhan. NDCG kemudian melakukan normalisasi terhadap DCG (Discounted Cumulative Gain) dengan membandingkannya terhadap IDCG (Ideal DCG), yaitu skor maksimum yang bisa diperoleh jika semua item relevan berada di posisi teratas. Nilai NDCG@10 berada dalam rentang 0 hingga 1, di mana skor 1.0 menunjukkan urutan rekomendasi yang sempurna.
+
+#### Cara kerja: 
+Metrik ini membandingkan ranking yang dihasilkan dengan ranking ideal, dimana item dengan relevansi tertinggi berada di posisi teratas.
+
+#### Formula:
+```math
+DCG@K = \sum_{i=1}^{K} \frac{rel_i}{\log_2(i+1)}
+NDCG@K = \frac{DCG@K}{IDCG@K}
+```
+Dimana:
+- **$`rel_i`$** = Relevansi item pada posisi ke-`i` dalam daftar rekomendasi
+- **$`i`$** = Posisi item dalam daftar peringkat, dimulai dari 1 hingga $`K`$
+- **$`K`$** = Jumlah item teratas (top-K) yang dievaluasi
+- **$`DCG@K`$** = Discounted Cumulative Gain hingga posisi ke-K
+- **$`IDCG@K`$** = Ideal DCG, yaitu DCG maksimum yang mungkin jika semua item relevan berada di urutan teratas
+- **$`NDCG@K`$** = Normalized DCG, yaitu rasio antara DCG dan IDCG untuk normalisasi skor antara 0 dan 1
+
+#### Hasil Evaluasi:
+| Judul Film           | Skor NDCG@10 |
+|----------------------|-------------|
+| The Dark Knight Rises | 0.9678      |
+| The Godfather        | 0.9791      |
+
+#### Analisis Hasil:
+- Skor mendekati 1.0 menunjukkan:
+  - Rekomendasi sangat relevan (kesamaan genre tinggi)
+  - Urutan optimal (film paling mirip di peringkat teratas)
+- Untuk "The Dark Knight Rises", sistem berhasil merekomendasikan film Batman terkait di posisi teratas
+
+
+### 2. Evaluasi Collaborative Filtering (SVD)
+
+Pada **Collaborative Filtering**, model ini berfokus pada problem statement kedua, yaitu bagaimana mempersonalisasi rekomendasi berdasarkan preferensi pengguna tertentu. Dengan menggunakan teknik **Singular Value Decomposition (SVD)**, sistem dapat memprediksi rating film berdasarkan pola rating pengguna lain yang memiliki preferensi serupa.
+
+
+#### **1. RMSE (Root Mean Squared Error)**
+
+##### Definisi:
+**RMSE (Root Mean Squared Error)** adalah metrik evaluasi yang digunakan untuk mengukur deviasi standar dari kesalahan prediksi dalam sebuah model. RMSE memberikan gambaran seberapa jauh prediksi model menyimpang dari nilai sebenarnya, dengan memberi penalti lebih besar terhadap kesalahan prediksi yang besar. Oleh karena itu, metrik ini sangat berguna ketika kesalahan besar perlu diminimalkan, karena sifatnya yang sensitif terhadap outlier. Nilai RMSE yang lebih kecil menunjukkan bahwa model memiliki kinerja prediksi yang lebih akurat.
+   
+##### Cara kerja: 
+Menghitung akar kuadrat dari rata-rata kuadrat selisih antara rating prediksi dan rating aktual
+
+##### Formula:
+```math
+RMSE = \sqrt{\frac{1}{N} \sum_{i=1}^{N} (y_i - \hat{y}_i)^2}
+```
+Dimana:
+- **$`y_i`$** = Rating sebenarnya dari pengguna
+- **$`\hat{y}_i`$** = Rating yang diprediksi oleh model
+- **$`N`$** = Jumlah sampel
+
+#### **1. MAE (Mean Absolute Error)**
+
+**MAE (Mean Absolute Error)** adalah metrik evaluasi yang digunakan untuk mengukur rata-rata dari kesalahan absolut antara rating yang diprediksi oleh model dan rating sebenarnya yang diberikan oleh pengguna. Metrik ini memberikan gambaran seberapa besar rata-rata deviasi prediksi dari nilai sebenarnya tanpa memperhatikan arah kesalahannya (positif atau negatif), sehingga semakin kecil nilai MAE, maka semakin akurat prediksi model tersebut.
+   
+##### Cara kerja: 
+Menghitung rata-rata selisih mutlak antara rating prediksi dan rating aktual
+
+##### Formula:
+```math
+MAE = \frac{1}{N} \sum_{i=1}^{N} |y_i - \hat{y}_i|
+```
+Dimana:
+- **$y_i$** = Rating sebenarnya dari pengguna ke-$i$
+- **$\hat{y}_i$** = Rating yang diprediksi oleh model untuk pengguna ke-$i$
+- **$N$** = Jumlah total data atau sampel yang dievaluasi
+
+Semakin kecil nilai MAE, semakin baik prediksi rating yang dihasilkan oleh model.
+
+##### Hasil Validasi Silang (5 fold):
+| Metrik  | Fold 1 | Fold 2 | Fold 3 | Fold 4 | Fold 5 | Rata-rata | Std Dev |
+|---------|--------|--------|--------|--------|--------|-----------|---------|
+| RMSE    | 0.8991 | 0.9058 | 0.8924 | 0.8937 | 0.9003 | 0.8983    | 0.0048  |
+| MAE     | 0.6920 | 0.6963 | 0.6881 | 0.6882 | 0.6925 | 0.6914    | 0.0031  |
+
+##### Analisis Hasil:
+- **Konsistensi Model**:
+  - Standar deviasi kecil (±0.0048) menunjukkan performa stabil
+- **Akurasi Prediksi**:
+  - RMSE 0.898 → Error prediksi rata-rata ≈0.9 poin rating
+  - MAE 0.691 → 68% prediksi memiliki error <1 poin rating
+- Memenuhi kebutuhan untuk rekomendasi personalisasi
+
+### Kesimpulan
+1. **Content-Based Filtering** telah berhasil dievaluasi menggunakan metrik **NDCG@10** dengan hasil yang sangat memuaskan (**0.9678** untuk The Dark Knight Rises dan **0.9791** untuk The Godfather). Nilai yang mendekati 1.0 ini menunjukkan bahwa sistem mampu memberikan rekomendasi film dengan kesamaan genre yang tinggi dan urutan ranking yang optimal, dimana film paling relevan selalu berada di posisi teratas.
+2. **Collaborative Filtering** dengan SVD menunjukkan performa yang solid berdasarkan evaluasi **RMSE (0.8983)** dan **MAE (0.6914)**. Nilai error yang relatif kecil ini mengindikasikan bahwa model memiliki akurasi yang baik dalam memprediksi rating pengguna, sehingga layak digunakan untuk sistem rekomendasi personalisasi.
+3. Kedua pendekatan secara terpisah telah memenuhi tujuan bisnis yang ditetapkan - Content-Based untuk menemukan film serupa dan Collaborative untuk rekomendasi personal, dengan bukti metrik evaluasi yang objektif dan konsisten.
