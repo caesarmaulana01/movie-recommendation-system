@@ -373,8 +373,6 @@ Sistem ini merekomendasikan film berdasarkan kemiripan deskripsi dan genre dari 
 | 9    | Donnie Brasco           | 0.316228         | [drama, crime]       | 2               |
 | 10   | Scarface                | 0.316228         | [drama, crime]       | 2               |
 
----
-
 ### 2. Collaborative Filtering (SVD)
 
 #### Definisi:
