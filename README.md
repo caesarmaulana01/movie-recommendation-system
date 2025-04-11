@@ -162,7 +162,7 @@ Dataset ini lebih luas, mencakup metadata untuk 45.000 film yang tercantum dalam
 
 ### Exploratory Data Analysis (EDA)
 
-#### 1. **Ringkasan Statistik Dataset Film**
+#### 1. Ringkasan Statistik Dataset Film
 Berdasarkan analisis statistik, berikut adalah beberapa insight penting dari dataset film:
 
 - **Rata-rata Rating Film**: Rata-rata rating film adalah 6.09, menunjukkan bahwa sebagian besar film mendapatkan rating yang cukup baik dari penonton.
@@ -170,40 +170,40 @@ Berdasarkan analisis statistik, berikut adalah beberapa insight penting dari dat
 - **Film dengan Pendapatan Tertinggi**: Film dengan pendapatan tertinggi adalah *Avatar* dengan total pendapatan $2,787,965,087.
 
 
-2. Distribusi Rating Film
+#### 2. Distribusi Rating Film
 Distribusi rata-rata rating film menunjukkan frekuensi rating yang diberikan oleh pengguna. Hasil visualisasi menunjukkan bahwa mayoritas film memiliki rating sekitar 6 hingga 7, dengan distribusi yang cenderung normal.
 
 ![Distribusi Rating Film](images/user_rating_distribution.png)
 
 
-3. Distribusi Rating Pengguna
+#### 3. Distribusi Rating Pengguna
 Distribusi rating pengguna dalam dataset The Movies menunjukkan bahwa sebagian besar rating diberikan dalam rentang 3 hingga 4, yang menunjukkan preferensi pengguna terhadap film yang memiliki rating lebih tinggi.
 
 ![Rating Pengguna](images/mean_distribution_vote.png)
 
-4. Hubungan antara Popularitas dan Pendapatan Film
+#### 4. Hubungan antara Popularitas dan Pendapatan Film
 Hubungan antara popularitas dan pendapatan menunjukkan bahwa film dengan popularitas yang lebih tinggi cenderung memiliki pendapatan yang lebih besar, meskipun ada beberapa pengecualian.
 
 ![Popularitas dan Pendapatan Film](images/popularity_income.png)
 
-5. Jumlah Film Berdasarkan Bahasa Asli
+#### 5. Jumlah Film Berdasarkan Bahasa Asli
 Jumlah film yang diproduksi dalam berbagai bahasa menunjukkan bahwa bahasa Inggris adalah yang paling dominan, diikuti oleh bahasa-bahasa lain.
 
 ![Jumlah Film Berdasarkan Bahasa](images/languange.png)
 
-6. Hubungan antara Durasi Film dan Rata-rata Vote
+#### 6. Hubungan antara Durasi Film dan Rata-rata Vote
 Analisis hubungan antara durasi film dan rating menunjukkan bahwa film dengan durasi lebih panjang tidak selalu mendapat rating yang lebih baik.
 
 
 ![Durasi Film dan Rata-rata](images/duration_mean.png)
 
-7. Top 10 Production Companies dengan Jumlah Film Terbanyak
+#### 7. Top 10 Production Companies dengan Jumlah Film Terbanyak
 Top 10 perusahaan produksi dengan jumlah film terbanyak di dataset menunjukkan perusahaan besar seperti Walt Disney Pictures mendominasi.
 
 
 ![Top 10 Production Companies](images/top_10.png)
 
-8. Heatmap Korelasi antara Variabel Penting
+#### 8. Heatmap Korelasi antara Variabel Penting
 Heatmap ini menunjukkan hubungan antar variabel penting seperti budget, popularitas, pendapatan, runtime, dan rating film. Korelasi antara pendapatan dan popularitas sangat kuat.
 
 ![Heatmap Korelasi](images/corellation_heatmap.png)
