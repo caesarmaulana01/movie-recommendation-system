@@ -451,10 +451,13 @@ Pada **Content-Based Filtering**, model rekomendasi dibangun untuk menjawab prob
 #### Cara kerja: 
 Metrik ini membandingkan ranking yang dihasilkan dengan ranking ideal, dimana item dengan relevansi tertinggi berada di posisi teratas.
 
-#### Formula:
+#### Formula 1:
 ```math
-DCG@K = \sum_{i=1}^{K} \frac{rel_i}{\log_2(i+1)}, 
+DCG@K = \sum_{i=1}^{K} \frac{rel_i}{\log_2(i+1)}
+```
 
+#### Formula 2:
+```math
 NDCG@K = \frac{DCG@K}{IDCG@K}
 ```
 Dimana:
